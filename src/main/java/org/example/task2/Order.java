@@ -2,39 +2,45 @@ package org.example.task2;
 
 public class Order {
 
-    public long id;
-    public String customer;
+    private long id;
+    private String customer;
 
     public Order(long id, String customer) {
         this.id = id;
         this.customer = customer;
     }
 
+    public long getId() {
+        return this.id;
+    }
+
+    public String getCustomer() {
+        return this.customer;
+    }
+
+    public void setCustomer(String customer) {
+        this.customer = customer;
+    }
+
     public String formOrderBill(Cart cart) {
-
         StringBuilder builder = new StringBuilder();
-        builder.append("Order number ").append(id).append(" for customer ").append(customer);
-        builder.append("\n------------------\n");
 
-        double sum = 0.0;
+        builder.append("Замовлення №").append(this.id)
+                .append(" для клієнта: ").append(this.customer).append("\n")
+                .append("\n");
 
-        for (int i = 0; i < cart.index; i++) {
+        double total = 0.0;
+        Item[] items = cart.getContents();
 
-            sum += cart.contents[i].price;
-
-            builder.append("Item id: ");
-            builder.append(cart.contents[i].id);
-            builder.append(" name: ");
-            builder.append(cart.contents[i].name);
-            builder.append(" price: ");
-            builder.append(cart.contents[i].price);
-            builder.append("\n");
+        for (Item item : items) {
+            builder.append("ID: ").append(item.getId())
+                    .append("Назва: ").append(item.getName())
+                    .append("Ціна: ").append(item.getPrice()).append(" грн\n");
+            total += item.getPrice();
         }
 
-        builder.append("------------------\n");
-        builder.append("Total sum: ");
-        builder.append(sum);
-
+        builder.append("\n")
+                .append("Загальна сума: ").append(total).append(" грн\n");
 
         return builder.toString();
     }
